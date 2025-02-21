@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { login } from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import { User } from '../types/User';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -28,9 +29,8 @@ const Login = () => {
     const formIsValid = validateForm();
     if (!formIsValid) return;
 
-    const res = await login(email, password);
-    if (res && res.status === 200) {
-      const usr = res.data.data.user;
+    const usr: User | undefined = await login(email, password);
+    if (usr !== undefined) {
       navigate('/welcome', { state: { name: usr.name } });
     }
   };
