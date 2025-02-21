@@ -36,7 +36,7 @@ export const useLoginForm = () => {
     setLoading(true);
 
     if (usr !== undefined) {
-      navigate('/welcome', { state: { name: usr.name } });
+      navigate('/welcome');
     } else {
       setError('Login failed');
       setTimeout(() => {
