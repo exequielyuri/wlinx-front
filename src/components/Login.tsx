@@ -5,6 +5,7 @@ const Login = () => {
     email,
     password,
     error,
+    loading,
     setEmail,
     setPassword,
     handleSubmit,
@@ -42,10 +43,14 @@ const Login = () => {
         </div>
         <button
           type='submit'
-          className='btn mt-3'
+          className={`btn mt-3 transition-all duration-300 ease-out ${error==='Login failed' ? 'btn-outline btn-error no-animation' : '' }`}
         >
-          Login
-          <span className='loading loading-spinner loading-sm'/>
+          {error === 'Login failed'
+            ? 'Invalid credentials'
+            : loading
+            ? <span className='loading loading-spinner loading-sm'/>
+            : 'Login'
+          }
         </button>
       </form>
     </div>

@@ -7,6 +7,7 @@ export const useLoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const validateForm = () => {
@@ -30,11 +31,18 @@ export const useLoginForm = () => {
     const formIsValid = validateForm();
     if (!formIsValid) return;
 
+    setLoading(true);
     const usr: User | undefined = await login(email, password);
+    setLoading(true);
+
     if (usr !== undefined) {
       navigate('/welcome', { state: { name: usr.name } });
     } else {
-      setError('Login failed. Please check your credentials.');
+      setError('Login failed');
+      setTimeout(() => {
+        setError('');
+        setLoading(false);
+      }, 500)
     }
   };
 
@@ -42,6 +50,7 @@ export const useLoginForm = () => {
     email,
     password,
     error,
+    loading,
     setEmail,
     setPassword,
     handleSubmit,
