@@ -5,12 +5,30 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  const validateForm = () => {
+    if (!email) {
+      setError('Email is required');
+      return false;
+    }
+
+    if (!password) {
+      setError('Password is required');
+      return false;
+    }
+
+    return true;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await login(email, password);
 
+    const formIsValid = validateForm();
+    if (!formIsValid) return;
+
+    const res = await login(email, password);
     if (res && res.status === 200) {
       const usr = res.data.data.user;
       navigate('/welcome', { state: { name: usr.name } });
@@ -32,6 +50,7 @@ const Login = () => {
         placeholder='Password'
       />
       <button type='submit'>Login</button>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </form>
   );
 };
